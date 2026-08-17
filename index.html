@@ -1,911 +1,316 @@
 <!DOCTYPE html>
-<html lang="zh-Hant">
+<html lang="zh-TW">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-<title>TOKYO 2026 | 9/18–9/22 行程</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Noto+Sans+TC:wght@400;500;700;900&display=swap" rel="stylesheet">
-<style>
-  :root{
-    --asphalt:#0f1013;
-    --carbon:#1b1c21;
-    --carbon-2:#25262d;
-    --line:#33343c;
-    --paper:#f3f1ea;
-    --ghost:#8b8d97;
-    --red:#ff3b30;
-    --red-dim:#7a2420;
-    --amber:#ffb648;
-    --green:#28d38c;
-    --blue:#4fa6ff;
-    --radius:14px;
-  }
-  *{box-sizing:border-box; -webkit-tap-highlight-color:transparent;}
-  html,body{margin:0;padding:0;}
-  body{
-    background:var(--asphalt);
-    color:var(--paper);
-    font-family:'Noto Sans TC',-apple-system,BlinkMacSystemFont,sans-serif;
-    min-height:100vh;
-    padding-bottom:84px;
-    overflow-x:hidden;
-  }
-  .display{font-family:'Bebas Neue',sans-serif; letter-spacing:0.04em;}
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>旅遊記帳本</title>
+  <style>
+    :root {
+      --bg-color: #121214;
+      --card-bg: #1e1e24;
+      --accent-color: #f39c12;
+      --text-color: #ffffff;
+      --text-secondary: #a0a0a0;
+      --border-color: #2a2a32;
+    }
 
-  /* ===== checkered stripe signature ===== */
-  .stripe{
-    height:6px;
-    width:100%;
-    background-image:repeating-linear-gradient(90deg,var(--paper) 0 8px, var(--asphalt) 8px 16px);
-    opacity:0.9;
-  }
-  .stripe.thin{height:4px;}
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background-color: var(--bg-color);
+      color: var(--text-color);
+      margin: 0;
+      padding: 20px;
+      display: flex;
+      justify-content: center;
+    }
 
-  /* ===== header ===== */
-  header{
-    background:linear-gradient(180deg,#17181d 0%, var(--asphalt) 100%);
-    padding:26px 20px 18px;
-    position:relative;
-    overflow:hidden;
-  }
-  header::after{
-    content:"";
-    position:absolute;
-    right:-40px; top:-60px;
-    width:220px; height:220px;
-    background:radial-gradient(circle, rgba(255,59,48,0.25) 0%, rgba(255,59,48,0) 70%);
-  }
-  .eyebrow{
-    font-size:12px;
-    letter-spacing:0.24em;
-    color:var(--red);
-    font-weight:700;
-    text-transform:uppercase;
-    margin-bottom:6px;
-  }
-  h1.title{
-    font-size:52px;
-    line-height:0.9;
-    margin:0 0 4px;
-    color:var(--paper);
-  }
-  .subdate{
-    font-size:15px;
-    color:var(--ghost);
-    font-weight:500;
-    margin-bottom:2px;
-  }
-  .subroute{
-    font-size:13px;
-    color:var(--amber);
-    font-weight:500;
-  }
+    .container {
+      width: 100%;
+      max-width: 480px;
+    }
 
-  main{padding:18px 16px 8px;}
+    h2 {
+      font-size: 1.2rem;
+      margin-bottom: 12px;
+      color: var(--text-color);
+    }
 
-  .panel{display:none;}
-  .panel.active{display:block; animation:fade .25s ease;}
-  @keyframes fade{from{opacity:0; transform:translateY(6px);} to{opacity:1; transform:translateY(0);}}
+    /* 總覽卡片區域 */
+    .overview {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 24px;
+    }
 
-  /* ===== day selector pills ===== */
-  .day-tabs{
-    display:flex;
-    gap:8px;
-    overflow-x:auto;
-    padding-bottom:6px;
-    margin-bottom:18px;
-    scrollbar-width:none;
-  }
-  .day-tabs::-webkit-scrollbar{display:none;}
-  .day-pill{
-    flex:0 0 auto;
-    background:var(--carbon);
-    border:1px solid var(--line);
-    color:var(--ghost);
-    padding:10px 16px;
-    border-radius:999px;
-    font-family:'Bebas Neue',sans-serif;
-    font-size:18px;
-    letter-spacing:0.03em;
-    white-space:nowrap;
-  }
-  .day-pill .d{font-size:11px; display:block; font-family:'Noto Sans TC'; letter-spacing:0; color:var(--ghost); margin-top:-2px;}
-  .day-pill.active{
-    background:var(--red);
-    border-color:var(--red);
-    color:#fff;
-  }
-  .day-pill.active .d{color:#ffe0dc;}
+    .card {
+      flex: 1;
+      background-color: var(--card-bg);
+      border-radius: 12px;
+      padding: 16px;
+      text-align: center;
+      border: 1px solid var(--border-color);
+    }
 
-  .day-heading{
-    display:flex;
-    align-items:baseline;
-    gap:10px;
-    margin-bottom:4px;
-  }
-  .day-heading .num{
-    font-family:'Bebas Neue',sans-serif;
-    font-size:34px;
-    color:var(--red);
-  }
-  .day-heading .txt{
-    font-size:16px;
-    font-weight:700;
-  }
-  .day-sub{
-    font-size:12.5px;
-    color:var(--ghost);
-    margin-bottom:16px;
-  }
+    .card-title {
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+      margin-bottom: 8px;
+    }
 
-  /* ===== timeline ===== */
-  .timeline{position:relative; padding-left:26px;}
-  .timeline::before{
-    content:"";
-    position:absolute;
-    left:8px; top:6px; bottom:6px;
-    width:2px;
-    background:var(--line);
-  }
-  .stop{
-    position:relative;
-    margin-bottom:16px;
-  }
-  .stop::before{
-    content:"";
-    position:absolute;
-    left:-26px; top:4px;
-    width:12px; height:12px;
-    border-radius:50%;
-    background:var(--carbon-2);
-    border:2px solid var(--dot,var(--ghost));
-  }
-  .stop.type-race{--dot:var(--red);}
-  .stop.type-shop{--dot:var(--amber);}
-  .stop.type-food{--dot:var(--green);}
-  .stop.type-view{--dot:var(--blue);}
-  .stop.type-move{--dot:var(--ghost);}
-  .stop.type-live{--dot:#c86bff;}
+    .card-amount {
+      font-size: 1.4rem;
+      font-weight: bold;
+    }
 
-  .stop-time{
-    font-family:'Bebas Neue',sans-serif;
-    font-size:15px;
-    color:var(--paper);
-    letter-spacing:0.03em;
-  }
-  .stop-card{
-    background:var(--carbon);
-    border:1px solid var(--line);
-    border-radius:var(--radius);
-    padding:12px 14px;
-    margin-top:6px;
-  }
-  .stop-title{
-    font-size:14.5px;
-    font-weight:700;
-    margin:0 0 4px;
-    line-height:1.4;
-  }
-  .stop-note{
-    font-size:12.5px;
-    color:var(--ghost);
-    line-height:1.5;
-    margin:0;
-  }
-  .stop-actions{
-    display:flex;
-    gap:8px;
-    margin-top:10px;
-    flex-wrap:wrap;
-  }
-  .map-btn{
-    display:inline-flex;
-    align-items:center;
-    gap:6px;
-    background:var(--carbon-2);
-    color:var(--paper);
-    border:1px solid var(--line);
-    border-radius:999px;
-    padding:7px 12px;
-    font-size:12px;
-    font-weight:500;
-    text-decoration:none;
-  }
-  .map-btn:active{background:var(--red); border-color:var(--red);}
-  .map-btn svg{width:13px; height:13px; flex:0 0 auto;}
+    /* 表單區域 */
+    .form-container {
+      background-color: var(--card-bg);
+      border-radius: 12px;
+      padding: 16px;
+      margin-bottom: 24px;
+      border: 1px solid var(--border-color);
+    }
 
-  .tag{
-    display:inline-block;
-    font-size:10.5px;
-    font-weight:700;
-    padding:3px 8px;
-    border-radius:6px;
-    margin-right:6px;
-    letter-spacing:0.02em;
-  }
-  .tag.race{background:rgba(255,59,48,0.15); color:var(--red);}
-  .tag.shop{background:rgba(255,182,72,0.15); color:var(--amber);}
-  .tag.food{background:rgba(40,211,140,0.15); color:var(--green);}
-  .tag.view{background:rgba(79,166,255,0.15); color:var(--blue);}
-  .tag.move{background:rgba(139,141,151,0.15); color:var(--ghost);}
-  .tag.live{background:rgba(200,107,255,0.15); color:#c86bff;}
+    .form-group {
+      margin-bottom: 12px;
+    }
 
-  .day-cost{
-    margin-top:10px;
-    background:var(--carbon-2);
-    border-left:3px solid var(--amber);
-    border-radius:0 10px 10px 0;
-    padding:10px 12px;
-    font-size:12.5px;
-    color:var(--paper);
-  }
-  .day-cost b{color:var(--amber);}
+    label {
+      display: block;
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+      margin-bottom: 6px;
+    }
 
-  /* ===== generic cards ===== */
-  .card{
-    background:var(--carbon);
-    border:1px solid var(--line);
-    border-radius:var(--radius);
-    padding:16px;
-    margin-bottom:14px;
-  }
-  .card h2{
-    font-family:'Bebas Neue',sans-serif;
-    font-size:22px;
-    letter-spacing:0.03em;
-    margin:0 0 10px;
-    color:var(--red);
-  }
-  .card h3{
-    font-size:14px;
-    margin:0 0 6px;
-    color:var(--paper);
-  }
-  .kv{
-    display:flex;
-    justify-content:space-between;
-    padding:8px 0;
-    border-bottom:1px solid var(--line);
-    font-size:13px;
-    gap:12px;
-  }
-  .kv:last-child{border-bottom:none;}
-  .kv .k{color:var(--ghost); flex:0 0 72px;}
-  .kv .v{color:var(--paper); text-align:right; flex:1;}
+    input, select {
+      width: 100%;
+      padding: 10px;
+      border-radius: 8px;
+      border: 1px solid var(--border-color);
+      background-color: #121214;
+      color: #fff;
+      box-sizing: border-box;
+      font-size: 1rem;
+    }
 
-  .section-label{
-    font-family:'Bebas Neue',sans-serif;
-    font-size:20px;
-    color:var(--paper);
-    margin:22px 0 10px;
-    letter-spacing:0.03em;
-  }
-  .section-label:first-child{margin-top:0;}
+    button {
+      width: 100%;
+      padding: 12px;
+      border-radius: 8px;
+      border: none;
+      background-color: var(--accent-color);
+      color: #000;
+      font-size: 1rem;
+      font-weight: bold;
+      cursor: pointer;
+      transition: opacity 0.2s;
+    }
 
-  /* ===== packing list ===== */
-  .check-item{
-    display:flex;
-    align-items:center;
-    gap:10px;
-    padding:10px 12px;
-    background:var(--carbon);
-    border:1px solid var(--line);
-    border-radius:10px;
-    margin-bottom:8px;
-    font-size:13.5px;
-    cursor:pointer;
-  }
-  .check-item .box{
-    width:19px; height:19px;
-    border-radius:5px;
-    border:2px solid var(--ghost);
-    flex:0 0 auto;
-    display:flex; align-items:center; justify-content:center;
-    transition:all .15s ease;
-  }
-  .check-item.checked .box{background:var(--green); border-color:var(--green);}
-  .check-item.checked .box::after{content:"✓"; color:#0f1013; font-size:12px; font-weight:900;}
-  .check-item.checked span.label{color:var(--ghost); text-decoration:line-through;}
-  .progress-wrap{
-    background:var(--carbon-2);
-    border-radius:999px;
-    height:8px;
-    overflow:hidden;
-    margin-bottom:16px;
-  }
-  .progress-bar{
-    height:100%;
-    background:linear-gradient(90deg,var(--red),var(--amber));
-    width:0%;
-    transition:width .3s ease;
-  }
-  .progress-txt{font-size:12px; color:var(--ghost); margin-bottom:8px;}
+    button:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
 
-  /* ===== budget ===== */
-  .budget-total{
-    text-align:center;
-    padding:22px 10px;
-    background:linear-gradient(135deg, var(--carbon) 0%, var(--carbon-2) 100%);
-    border:1px solid var(--line);
-    border-radius:var(--radius);
-    margin-bottom:16px;
-  }
-  .budget-total .num{
-    font-family:'Bebas Neue',sans-serif;
-    font-size:44px;
-    color:var(--amber);
-    line-height:1;
-  }
-  .budget-total .lbl{font-size:12px; color:var(--ghost); margin-top:4px;}
-  .bar-row{margin-bottom:12px;}
-  .bar-row .lbl-row{display:flex; justify-content:space-between; font-size:12.5px; margin-bottom:5px;}
-  .bar-row .lbl-row .amt{color:var(--amber); font-weight:700;}
-  .bar-track{height:8px; background:var(--carbon-2); border-radius:999px; overflow:hidden;}
-  .bar-fill{height:100%; background:var(--red); border-radius:999px;}
-  .note-box{
-    font-size:12px;
-    color:var(--ghost);
-    background:var(--carbon-2);
-    border-radius:10px;
-    padding:12px 14px;
-    line-height:1.6;
-    margin-top:6px;
-  }
+    /* 明細紀錄區域 */
+    .list-container {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
 
-  /* ===== expense tracker ===== */
-  .person-toggle { display: flex; gap: 8px; margin-bottom: 12px; }
-  .person-toggle label { flex: 1; text-align: center; padding: 12px; background: var(--carbon-2); border: 1px solid var(--line); border-radius: 8px; color: var(--ghost); font-weight: 500; font-size: 14px; transition: all 0.2s;}
-  .person-toggle input[type="radio"] { display: none; }
-  .person-toggle input[type="radio"]:checked + label { background: var(--red); color: white; border-color: var(--red); }
-  
-  .input-group { margin-bottom: 12px; }
-  .expense-input { width: 100%; background: var(--carbon-2); border: 1px solid var(--line); color: var(--paper); padding: 14px 12px; border-radius: 8px; font-size: 15px; font-family:'Noto Sans TC'; outline:none;}
-  .expense-input:focus { border-color: var(--amber); }
-  .expense-input::placeholder { color: var(--ghost); }
-  
-  .expense-btn { width: 100%; background: var(--red); color: white; padding: 14px; border-radius: 8px; border: none; font-weight: 700; font-size: 15px; margin-top: 4px; cursor: pointer; transition: opacity 0.2s;}
-  .expense-btn:active { opacity: 0.8; }
-  
-  .expense-summary { display: flex; gap: 12px; margin-bottom: 20px; }
-  .summary-box { flex: 1; background: var(--carbon-2); padding: 16px; border-radius: 12px; text-align: center; border: 1px solid var(--line); }
-  .summary-box .lbl { font-size: 13px; color: var(--ghost); font-weight: 500;}
-  .summary-box .val { font-family: 'Bebas Neue', sans-serif; font-size: 28px; color: var(--paper); margin-top: 4px; }
-  
-  .expense-list { display:flex; flex-direction:column; gap:8px; }
-  .expense-item { display: flex; justify-content: space-between; align-items: center; background: var(--carbon); padding: 14px; border: 1px solid var(--line); border-radius: 10px; }
-  .expense-info { display: flex; flex-direction: column; gap:4px; }
-  .expense-memo { font-size: 15px; color: var(--paper); font-weight: 500; }
-  .expense-person { font-size: 12px; color: var(--ghost); }
-  .expense-person.a { color: var(--amber); }
-  .expense-person.b { color: var(--blue); }
-  .expense-amt { font-family: 'Bebas Neue', sans-serif; font-size: 20px; color: var(--paper); }
-  .expense-del { color: var(--red); background: none; border: none; font-size: 22px; padding: 0 0 0 12px; cursor: pointer; line-height:1;}
+    .item-card {
+      background-color: var(--card-bg);
+      border-radius: 10px;
+      padding: 14px 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border: 1px solid var(--border-color);
+    }
 
-  /* ===== bottom nav ===== */
-  nav.bottom{
-    position:fixed;
-    bottom:0; left:0; right:0;
-    background:rgba(15,16,19,0.96);
-    backdrop-filter:blur(10px);
-    border-top:1px solid var(--line);
-    display:flex;
-    padding:6px 4px calc(6px + env(safe-area-inset-bottom));
-    z-index:50;
-  }
-  nav.bottom button{
-    flex:1;
-    background:none;
-    border:none;
-    color:var(--ghost);
-    display:flex;
-    flex-direction:column;
-    align-items:center;
-    gap:3px;
-    padding:6px 2px;
-    font-family:'Noto Sans TC';
-    font-size:10.5px;
-    font-weight:500;
-  }
-  nav.bottom button svg{width:21px; height:21px;}
-  nav.bottom button.active{color:var(--red);}
-  nav.bottom button.active svg{filter:drop-shadow(0 0 6px rgba(255,59,48,0.5));}
+    .item-info .memo {
+      font-size: 1rem;
+      font-weight: bold;
+      margin-bottom: 4px;
+    }
 
-  a{color:inherit;}
-</style>
+    .item-info .sub-info {
+      font-size: 0.8rem;
+      color: var(--accent-color);
+    }
+
+    .item-amount {
+      font-size: 1.1rem;
+      font-weight: bold;
+    }
+
+    .loading-text {
+      text-align: center;
+      color: var(--text-secondary);
+      padding: 20px 0;
+    }
+  </style>
 </head>
 <body>
 
-<header>
-  <div class="eyebrow">TOKYO TRIP · 東京自由行</div>
-  <h1 class="title display">2026<br>09.18→09.22</h1>
-  <div class="subdate">5天4夜・F1聖地巡禮 × 潮牌爆買 × The Weeknd演唱會</div>
-</header>
-<div class="stripe"></div>
-
-<main>
-
-  <!-- ============ PANEL 1: 每日行程 ============ -->
-  <section class="panel active" id="panel-days">
-    <div class="day-tabs" id="dayTabs"></div>
-    <div id="dayContent"></div>
-  </section>
-
-  <!-- ============ PANEL 2: 交通 ============ -->
-  <section class="panel" id="panel-transit">
-    <div class="section-label">交通卡</div>
+<div class="container">
+  <!-- 花費總覽 -->
+  <h2>花費總覽</h2>
+  <div class="overview">
     <div class="card">
-      <h3>Suica / Pasmo</h3>
-      <p class="stop-note">建議抵達成田機場或飯店附近超商先儲值 3,000–5,000円。演唱會、爆買日人潮多，記得提前加值，避免排隊補票。</p>
+      <div class="card-title">我 (A) 總計</div>
+      <div class="card-amount" id="totalA">¥0</div>
     </div>
-
-    <div class="section-label">機場交通</div>
     <div class="card">
-      <div class="kv"><div class="k">去程</div><div class="v">京成Skyliner：成田機場→日暮里站，約41分・單程約2,570円/人</div></div>
-      <div class="kv"><div class="k">回程</div><div class="v">大塚→日暮里(JR山手線)→Skyliner直達成田・約2,570円/人</div></div>
-      <div class="kv"><div class="k">全席指定</div><div class="v">建議提前於官網/窗口預約座位</div></div>
+      <div class="card-title">旅伴 (B) 總計</div>
+      <div class="card-amount" id="totalB">¥0</div>
     </div>
+  </div>
 
-    <div class="section-label">每日交通估算</div>
-    <div class="card">
-      <div class="kv"><div class="k">Day 1</div><div class="v">約1,700円（大塚↔中野↔銀座↔澀谷↔池袋）</div></div>
-      <div class="kv"><div class="k">Day 2</div><div class="v">約400円（大塚↔原宿↔新宿）</div></div>
-      <div class="kv"><div class="k">Day 3</div><div class="v">約700–800円（大塚↔駒込、大塚↔西武球場前）</div></div>
-      <div class="kv"><div class="k">Day 4</div><div class="v">約470円（大塚↔駒込↔上野↔秋葉原）</div></div>
-      <div class="kv"><div class="k">Day 5</div><div class="v">約2,700円（大塚↔成田機場，含Skyliner）</div></div>
-    </div>
-    <div class="note-box">💡 IC卡刷卡通常比買紙本車票便宜幾円，行程中的JR山手線／地鐵短程移動建議一律使用Suica/Pasmo感應搭乘。</div>
-  </section>
-
-  <!-- ============ PANEL 3: 住宿 ============ -->
-  <section class="panel" id="panel-hotel">
-    <div class="section-label">飯店資訊</div>
-    <div class="card">
-      <h2>COCOYO HOTEL 大塚</h2>
-      <div class="kv"><div class="k">地址</div><div class="v">東京都豊島區北大塚2-20-6</div></div>
-      <div class="kv"><div class="k">交通</div><div class="v">JR山手線「大塚站」步行約3-5分鐘</div></div>
-      <div class="kv"><div class="k">入住</div><div class="v">9/18 Check-in，9/22 Check-out（共4晚）</div></div>
-      <div class="stop-actions" style="margin-top:12px;">
-        <a class="map-btn" target="_blank" href="https://maps.app.goo.gl/hFYTETCQcjDtg6DR9?g_st=com.apple.sharing.quick-note">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21s-7-6.5-7-11a7 7 0 0 1 14 0c0 4.5-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/></svg>
-          在Google地圖開啟導航
-        </a>
+  <!-- 新增花費表單 -->
+  <div class="form-container">
+    <form id="expenseForm">
+      <div class="form-group">
+        <label for="person">付款人員</label>
+        <select id="person" required>
+          <option value="A">我 (A)</option>
+          <option value="B">旅伴 (B)</option>
+        </select>
       </div>
-    </div>
-
-    <div class="section-label">航班資訊</div>
-    <div class="card">
-      <div class="kv"><div class="k">去程</div><div class="v">TR866・9/18抵達成田機場 11:00</div></div>
-      <div class="kv"><div class="k">回程</div><div class="v">MM625・9/22成田機場起飛 16:55</div></div>
-    </div>
-  </section>
-
-  <!-- ============ PANEL 4: 行李 ============ -->
-  <section class="panel" id="panel-packing">
-    <div class="section-label">打包進度</div>
-    <div class="progress-txt" id="progressTxt">0 / 0 已完成</div>
-    <div class="progress-wrap"><div class="progress-bar" id="progressBar"></div></div>
-
-    <div id="packingLists"></div>
-  </section>
-
-  <!-- ============ PANEL 5: 預算 ============ -->
-  <section class="panel" id="panel-budget">
-    <div class="budget-total">
-      <div class="num display">¥21,000–26,000</div>
-      <div class="lbl">每人預估總花費（不含機票／房費／演唱會票／購物）</div>
-    </div>
-
-    <div class="section-label">分類估算</div>
-    <div class="card">
-      <div class="bar-row">
-        <div class="lbl-row"><span>市內交通（5日）</span><span class="amt">約 ¥5,900</span></div>
-        <div class="bar-track"><div class="bar-fill" style="width:23%"></div></div>
+      <div class="form-group">
+        <label for="amount">金額 (¥)</label>
+        <input type="number" id="amount" placeholder="例如：1000" required>
       </div>
-      <div class="bar-row">
-        <div class="lbl-row"><span>景點門票（SHIBUYA SKY等）</span><span class="amt">約 ¥3,400起</span></div>
-        <div class="bar-track"><div class="bar-fill" style="width:14%; background:var(--blue);"></div></div>
+      <div class="form-group">
+        <label for="memo">備註 / 項目</label>
+        <input type="text" id="memo" placeholder="例如：晚餐、車票" required>
       </div>
-      <div class="bar-row">
-        <div class="lbl-row"><span>餐飲（4日）</span><span class="amt">約 ¥12,000–16,500</span></div>
-        <div class="bar-track"><div class="bar-fill" style="width:60%; background:var(--green);"></div></div>
-      </div>
-    </div>
+      <button type="submit" id="submitBtn">新增花費</button>
+    </form>
+  </div>
 
-    <div class="section-label">每日花費（不含購物）</div>
-    <div class="card">
-      <div class="kv"><div class="k">Day 1</div><div class="v">約 ¥8,000–10,000</div></div>
-      <div class="kv"><div class="k">Day 2</div><div class="v">約 ¥5,000–7,000</div></div>
-      <div class="kv"><div class="k">Day 3</div><div class="v">約 ¥3,000–4,000（不含票價）</div></div>
-      <div class="kv"><div class="k">Day 4</div><div class="v">約 ¥4,000–5,000</div></div>
-      <div class="kv"><div class="k">Day 5</div><div class="v">約 ¥2,700（交通）</div></div>
-    </div>
-
-    <div class="note-box">⚠️ 不含：來回機票、飯店房費、演唱會門票、購物花費。原宿（Day2）與秋葉原（Day4）是本行程購物大宗，建議依個人預算另外抓額度。金額為公開資訊估算之參考值，實際請以現場為準。</div>
-  </section>
-
-  <!-- ============ PANEL 6: 記帳 (NEW) ============ -->
-  <section class="panel" id="panel-expense">
-    <div class="section-label">新增紀錄</div>
-    <div class="card">
-      <div class="person-toggle">
-        <input type="radio" name="person" id="personA" value="A" checked>
-        <label for="personA">我 (A)</label>
-        <input type="radio" name="person" id="personB" value="B">
-        <label for="personB">旅伴 (B)</label>
-      </div>
-      <div class="input-group">
-        <input type="number" id="expAmount" class="expense-input" placeholder="輸入金額 (例: 1500)" inputmode="numeric">
-      </div>
-      <div class="input-group">
-        <input type="text" id="expMemo" class="expense-input" placeholder="備註 (例: 買藥妝、吃拉麵...)">
-      </div>
-      <button class="expense-btn" id="btnAddExpense">新增花費</button>
-    </div>
-
-    <div class="section-label">花費總覽</div>
-    <div class="expense-summary">
-      <div class="summary-box">
-        <div class="lbl">我 (A) 總計</div>
-        <div class="val" id="sumA">¥0</div>
-      </div>
-      <div class="summary-box">
-        <div class="lbl">旅伴 (B) 總計</div>
-        <div class="val" id="sumB">¥0</div>
-      </div>
-    </div>
-
-    <div class="section-label">明細紀錄</div>
-    <div id="expenseList" class="expense-list">
-      <!-- 記帳清單將產生於此 -->
-    </div>
-  </section>
-
-</main>
-
-<nav class="bottom" id="bottomNav">
-  <button class="active" data-panel="panel-days">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg>
-    每日行程
-  </button>
-  <button data-panel="panel-transit">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="3" width="16" height="14" rx="2"/><circle cx="8" cy="20" r="1.2"/><circle cx="16" cy="20" r="1.2"/><path d="M4 11h16"/></svg>
-    交通
-  </button>
-  <button data-panel="panel-hotel">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 21V9l9-6 9 6v12"/><path d="M9 21v-6h6v6"/></svg>
-    住宿
-  </button>
-  <button data-panel="panel-packing">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="7" width="14" height="14" rx="2"/><path d="M9 7V5a3 3 0 0 1 6 0v2"/></svg>
-    行李
-  </button>
-  <button data-panel="panel-budget">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v10M9 9.5c0-1.4 1.3-2.5 3-2.5s3 1 3 2.2c0 2.8-6 1.5-6 4.3 0 1.2 1.3 2.2 3 2.2s3-1.1 3-2.5"/></svg>
-    預算
-  </button>
-  <!-- 記帳按鈕 -->
-  <button data-panel="panel-expense">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 2v20l2-2 2 2 2-2 2 2 2-2 2 2 2-2 2 2V2z"/><path d="M8 6h8M8 10h8M8 14h8M8 18h4"/></svg>
-    記帳
-  </button>
-</nav>
+  <!-- 明細紀錄列表 -->
+  <h2>明細紀錄</h2>
+  <div class="list-container" id="expenseList">
+    <div class="loading-text">資料同步載入中...</div>
+  </div>
+</div>
 
 <script>
-/* ================= DATA ================= */
-const days = [
-  {
-    id:1, date:"9/18 (五)", label:"落地東京 → 中野F1聖地 → 銀座F1周邊 → 澀谷SKY夜景",
-    cost:"交通約¥1,700・門票約¥3,400起・餐費約¥2,500–3,500・預估總花費 ¥8,000–10,000",
-    stops:[
-      {t:"11:00", type:"move", tag:"移動", title:"🛬 抵達成田機場：辦理入境、領行李", note:"" },
-      {t:"12:00–13:30", type:"move", tag:"移動", title:"🚄 前往大塚飯店", note:"搭乘京成Skyliner至日暮里站，轉JR山手線至大塚站"},
-      {t:"13:30–14:15", type:"move", tag:"住宿", title:"🏨 飯店Check-in＆放行李", note:"COCOYO HOTEL 大塚", map:"https://maps.app.goo.gl/hFYTETCQcjDtg6DR9?g_st=com.apple.sharing.quick-note"},
-      {t:"14:15–14:45", type:"move", tag:"移動", title:"🚇 輕裝前往中野", note:"大塚→新宿(JR山手線3站)，轉中央線快速(1站)直達中野"},
-      {t:"14:45–16:30", type:"race", tag:"F1聖地", title:"🏎️ F1 Signass 中野店", note:"淘絕版F1車隊外套、老海報、帽子與簽名卡片", map:"https://www.google.com/maps/search/?api=1&query=F1+Signass&query_place_id=ChIJ72aGiZ7zGGAR_OGVraKyfM4"},
-      {t:"16:15–17:15", type:"race", tag:"F1聖地", title:"🏎️ BINGO SPORTS（東京展間）", note:"朝聖日本頂級賽車/超跑拍賣展間：Pagani、Bugatti、經典Ferrari賽車等", map:"https://www.google.com/maps/search/?api=1&query=BINGO+SPORTS+Tokyo&query_place_id=ChIJMfaYcoeLGGARteXeaMYnQpw"},
-      {t:"17:15–18:30", type:"race", tag:"F1聖地", title:"🏎️ EURO SPORTS TOKYO（銀座店）", note:"Marronnier Gate 1 B1F，朝聖Ferrari、Red Bull等各大車隊最新隊服與賽車帽", map:"https://www.google.com/maps/search/?api=1&query=EURO+SPORTS+TOKYO&query_place_id=ChIJj7HGFwCLGGARofqDJMEzNZ0"},
-      {t:"18:30–18:45", type:"move", tag:"移動", title:"🚇 有樂町→澀谷", note:"JR山手線直達"},
-      {t:"19:00–20:30", type:"view", tag:"夜景", title:"🌆 SHIBUYA SKY高空百萬夜景", note:"⚠️記得提前3-4週（約8/21左右）搶晚間門票"},
-      {t:"20:30–22:00", type:"food", tag:"晚餐", title:"🍻 串焼き ミートマン 澀谷店", note:"", map:"https://www.google.com/maps/search/?api=1&query=Kushiyaki+Meat+Man&query_place_id=ChIJ76jOJaqMGGARt8ajQRZ6QBk"},
-      {t:"21:30後", type:"race", tag:"F1聖地", title:"🏎️ 池袋Sunshine City地下賞車＋2F買雨衣", note:"直奔B2/B3停車場朝聖深夜出沒的神級改裝跑車與JDM", map:"https://www.google.com/maps/search/?api=1&query=Sunshine+Parking+Lot&query_place_id=ChIJmZOpD2qNGGAROREIKOtRy8M"}
-    ]
-  },
-  {
-    id:2, date:"9/19 (六)", label:"原宿潮流爆買 → 新宿車模 → 歌舞伎町燒肉",
-    cost:"交通約¥400・購物依個人預算・餐費約¥4,500–6,500・預估總花費(不含購物) ¥5,000–7,000",
-    stops:[
-      {t:"10:00–11:00", type:"move", tag:"悠閒", title:"☕ 飯店周邊散步、悠閒出發", note:""},
-      {t:"11:30–16:30", type:"shop", tag:"爆買", title:"🛍️ 原宿/表參道潮流爆買＋午餐", note:"LIBERTY WALK TOKYO → 午餐 → AAPE STORE 原宿 → BAPE STORE 原宿店", map:"https://maps.app.goo.gl/u8nmffz6TMJGWffo8?g_st=com.apple.sharing.quick-note"},
-      {t:"16:30–17:00", type:"move", tag:"移動", title:"🚇 原宿→新宿", note:"JR山手線2站"},
-      {t:"17:00–18:15", type:"race", tag:"F1聖地", title:"🏎️ KEN BOX 新宿店", note:"朝聖中古/絕版Tomica賽車模型，營業至20:00", map:"https://maps.app.goo.gl/nktahhbR3Tth64387?g_st=com.apple.sharing.quick-note"},
-      {t:"18:15–19:30", type:"shop", tag:"爆買", title:"🛍️ Alpen Tokyo", note:"", map:"https://www.google.com/maps/search/?api=1&query=Alpen+Tokyo+Shinjuku&query_place_id=ChIJ_VYfhdSNGGARpG4sfHX889w"},
-      {t:"19:30–20:00", type:"view", tag:"散策", title:"🌃 新宿歌舞伎町散策、霓虹夜景打卡", note:""},
-      {t:"20:00後", type:"food", tag:"晚餐", title:"🔥 火之丸-Hinomaru- 日式燒肉", note:"記得先預約", map:"https://maps.app.goo.gl/oZgchBTZuZiexQey7?g_st=com.apple.sharing.quick-note"}
-    ]
-  },
-  {
-    id:3, date:"9/20 (日)", label:"貓咪神社 → 威肯演唱會",
-    cost:"交通約¥700–800・演唱會票依購票金額・餐費約¥2,000–3,000・預估總花費(不含票價) ¥3,000–4,000",
-    stops:[
-      {t:"09:00–10:15", type:"view", tag:"神社", title:"🐱 妙義神社（貓咪神社）", note:"大塚站搭JR山手線2站至駒込站，步行5分鐘。尋找貓咪石雕、入手貓咪御守與繪馬", map:"https://maps.app.goo.gl/wjDiCLVvgWk594iK7?g_st=com.apple.sharing.quick-note"},
-      {t:"10:30–14:00", type:"food", tag:"早午餐", title:"☕ 吃早午餐、回飯店卸貨充飽電", note:""},
-      {t:"14:30後", type:"live", tag:"演唱會", title:"🎤 西武巨蛋：The Weeknd 演唱會！", note:"大塚→池袋(轉西武池袋線)→西武球場前站。⚠️提早出發應對排隊人潮，回程人潮極多；Suica/Pasmo請先儲值足夠金額；巨蛋半開放式，記得帶薄外套", map:"https://maps.app.goo.gl/ygCZtLf52oxr8x2JA?g_st=com.apple.sharing.quick-note"}
-    ]
-  },
-  {
-    id:4, date:"9/21 (一)", label:"秋葉原大採購（電器/藥妝/公仔）＋二手平板",
-    cost:"交通約¥470・購物依個人預算・餐費約¥3,000–4,000・預估總花費(不含購物) ¥4,000–5,000",
-    stops:[
-      {t:"10:45–11:45", type:"race", tag:"F1聖地", title:"🏎️ Mini Car Shop Global（週一限定開門）", note:"大塚站搭山手線2站至駒込站，出站走5分。週一11:00開門，衝第一波搶絕版車", map:"https://maps.app.goo.gl/AP6dSckzQQbTYisD7?g_st=com.apple.sharing.quick-note"},
-      {t:"13:30–14:30", type:"food", tag:"小吃", title:"🛍️ 上野阿美橫丁散策與吃喝", note:"從駒込站搭山手線直達上野站。章魚燒、炸肉餅、二木的菓子零食", map:"https://maps.app.goo.gl/ZFF2WZmtNyArccKS7?g_st=com.apple.sharing.quick-note"},
-      {t:"14:30–15:30", type:"shop", tag:"安全帽", title:"🪖 Arai安全帽授權專賣店（上野機車街）", note:"UPC RIDE ON 或周邊機車用品店，東京都台東區東上野", map:"https://www.google.com/maps/search/?api=1&query=Ride+On+Ueno&query_place_id=ChIJS5HiNpqOGGARNUXkU7GMDKA"},
-      {t:"15:30–16:30", type:"shop", tag:"安全帽", title:"🪖 SHOEI Gallery TOKYO（秋葉原/神田）", note:"朝聖SHOEI官方旗艦店，欣賞限定展出帽款與官方服飾配件", map:"https://www.google.com/maps/search/?api=1&query=SHOEI+Gallery+TOKYO&query_place_id=ChIJ26epGHaNGGAR9EHaMCwWbrk"},
-      {t:"16:30–19:30", type:"shop", tag:"爆買", title:"🛒 秋葉原超級大購物時間", note:"3COINS+plus(友都八喜Akiba大樓7F) → 駿河屋秋葉原本館(汽車模型/盲盒/黑膠) → Bic Camera AKIBA(免稅10%+7%折價券) → 松本清/Sundrug藥妝退稅", map:[
-        {url:"https://maps.app.goo.gl/SVjXP5A5UCeR9Jac8?g_st=com.apple.sharing.quick-note", label:"3COINS"},
-        {url:"https://www.google.com/maps/search/?api=1&query=SURUGA-YA+Akihabara+Main+Building&query_place_id=ChIJhTzCxUiNGGARfWRafi-eBys", label:"駿河屋"},
-        {url:"https://www.google.com/maps/search/?api=1&query=BicCamera+AKIBA&query_place_id=ChIJM_vroB2MGGARBOd4T-bESSM", label:"Bic Camera"}
-      ]},
-      {t:"19:30後", type:"food", tag:"慶功", title:"🍻 回大塚飯店放戰利品，居酒屋慶功", note:"大塚或池袋周邊"}
-    ]
-  },
-  {
-    id:5, date:"9/22 (二)", label:"最後補貨 → 滿載而歸返台",
-    cost:"交通約¥2,700",
-    stops:[
-      {t:"09:30–11:30", type:"shop", tag:"最後補貨", title:"🧳 飯店Check-out＆最後衝刺", note:"退房後至隔壁池袋站進行免稅藥妝、零食盲盒的最後補刀"},
-      {t:"11:30–12:55", type:"move", tag:"移動", title:"🚄 前往成田機場", note:"大塚站搭山手線至日暮里站，無縫轉乘Skyliner直奔成田機場"},
-      {t:"12:55", type:"move", tag:"機場", title:"✈️ 準時抵達機場（提前4小時）", note:"辦理登機報到、行李託運，餘下時間免稅店採購伴手禮"},
-      {t:"16:55", type:"move", tag:"起飛", title:"🛫 班機起飛，返回台灣！", note:"MM625"}
-    ]
+  // Google Apps Script 網頁應用程式網址
+  const scriptUrl = 'https://script.google.com/macros/s/AKfycbyyD4-7_lMVZTETm9CT_XVfDXARLkHPf2N1Slbs18bsJKinQDEVq7IcMECnfynhkJ1Xkw/exec';
+
+  const expenseForm = document.getElementById('expenseForm');
+  const submitBtn = document.getElementById('submitBtn');
+  const expenseList = document.getElementById('expenseList');
+  const totalAEl = document.getElementById('totalA');
+  const totalBEl = document.getElementById('totalB');
+
+  // 頁面載入完成後自動抓取雲端最新資料
+  window.addEventListener('DOMContentLoaded', loadCloudData);
+
+  // 1. 從 Google 試算表載入資料
+  function loadCloudData() {
+    expenseList.innerHTML = '<div class="loading-text">資料同步載入中...</div>';
+
+    fetch(scriptUrl)
+      .then(response => response.json())
+      .then(data => {
+        renderExpenses(data);
+      })
+      .catch(err => {
+        console.error("同步失敗：", err);
+        expenseList.innerHTML = '<div class="loading-text" style="color: #e74c3c;">資料載入失敗，請檢查網路連線</div>';
+      });
   }
-];
 
-const packing = {
-  "證件與金融":["護照（效期6個月以上）","機票、飯店訂單、演唱會電子票","信用卡（雙卡備用）、少量現金（日圓）","旅遊平安險/不便險保單"],
-  "交通與通訊":["Suica/Pasmo實體卡或Apple Pay虛擬卡（先儲值）","上網：eSIM或WiFi分享機","事先下載Google Maps離線地圖、Suica App"],
-  "行李（爆買行程建議）":["大型收納行李箱＋預留戰利品空箱/摺疊袋","隨身輕便後背包（逛街用）","轉接頭、行動電源、充電線","演唱會用：薄外套、輕便雨衣、應援物品","安全帽採買：量頭圍工具或記下尺寸"],
-  "藥品與生活":["個人常備藥","個人保養品小樣","換洗衣物5天份、拖鞋"]
-};
+  // 2. 渲染資料與計算總金額
+  function renderExpenses(data) {
+    expenseList.innerHTML = '';
+    let totalA = 0;
+    let totalB = 0;
 
-/* ================= RENDER DAYS ================= */
-const dayTabs = document.getElementById('dayTabs');
-const dayContent = document.getElementById('dayContent');
-let activeDay = 1;
+    if (!data || data.length === 0) {
+      expenseList.innerHTML = '<div class="loading-text">目前尚無記帳紀錄</div>';
+      totalAEl.textContent = '¥0';
+      totalBEl.textContent = '¥0';
+      return;
+    }
 
-function renderDayTabs(){
-  dayTabs.innerHTML = days.map(d=>`
-    <button class="day-pill${d.id===activeDay?' active':''}" data-day="${d.id}">
-      DAY ${d.id}<span class="d">${d.date}</span>
-    </button>`).join('');
-  dayTabs.querySelectorAll('.day-pill').forEach(btn=>{
-    btn.addEventListener('click', ()=>{ activeDay = parseInt(btn.dataset.day); renderDayTabs(); renderDayContent(); });
-  });
-}
+    // 由新到舊排序顯示
+    data.reverse().forEach(item => {
+      const amt = Number(item.amount) || 0;
+      
+      if (item.person === 'A') {
+        totalA += amt;
+      } else if (item.person === 'B') {
+        totalB += amt;
+      }
 
-function pinIcon(){
-  return `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21s-7-6.5-7-11a7 7 0 0 1 14 0c0 4.5-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/></svg>`;
-}
-function mapButtonsHtml(map){
-  if(!map) return '';
-  const list = Array.isArray(map) ? map : [{url:map, label:'開啟導航'}];
-  const btns = list.map(m=>`<a class="map-btn" target="_blank" href="${m.url}">${pinIcon()}${m.label||'開啟導航'}</a>`).join('');
-  return `<div class="stop-actions">${btns}</div>`;
-}
-function renderDayContent(){
-  const d = days.find(x=>x.id===activeDay);
-  const stopsHtml = d.stops.map(s=>`
-    <div class="stop type-${s.type}">
-      <div class="stop-time">${s.t}</div>
-      <div class="stop-card">
-        <span class="tag ${s.type}">${s.tag}</span>
-        <p class="stop-title">${s.title}</p>
-        ${s.note ? `<p class="stop-note">${s.note}</p>` : ''}
-        ${mapButtonsHtml(s.map)}
-      </div>
-    </div>`).join('');
-
-  dayContent.innerHTML = `
-    <div class="day-heading"><span class="num display">DAY ${d.id}</span><span class="txt">${d.date}</span></div>
-    <div class="day-sub">${d.label}</div>
-    <div class="timeline">${stopsHtml}</div>
-    <div class="day-cost"><b>💰 花費估算：</b>${d.cost}</div>
-  `;
-}
-
-renderDayTabs();
-renderDayContent();
-
-/* ================= PACKING LIST ================= */
-const packingWrap = document.getElementById('packingLists');
-let checkedState = {};
-let totalItems = 0;
-
-function renderPacking(){
-  let html = '';
-  let idx = 0;
-  for(const cat in packing){
-    html += `<div class="section-label">${cat}</div>`;
-    packing[cat].forEach(item=>{
-      const key = 'p'+idx;
-      if(!(key in checkedState)) checkedState[key] = false;
-      html += `<div class="check-item${checkedState[key]?' checked':''}" data-key="${key}">
-        <div class="box"></div><span class="label">${item}</span>
-      </div>`;
-      idx++;
-    });
-  }
-  totalItems = idx;
-  packingWrap.innerHTML = html;
-  packingWrap.querySelectorAll('.check-item').forEach(el=>{
-    el.addEventListener('click', ()=>{
-      const key = el.dataset.key;
-      checkedState[key] = !checkedState[key];
-      el.classList.toggle('checked');
-      updateProgress();
-    });
-  });
-  updateProgress();
-}
-
-function updateProgress(){
-  const done = Object.values(checkedState).filter(Boolean).length;
-  document.getElementById('progressTxt').textContent = `${done} / ${totalItems} 已完成`;
-  document.getElementById('progressBar').style.width = (totalItems? (done/totalItems*100):0) + '%';
-}
-
-renderPacking();
-
-/* ================= EXPENSE TRACKER ================= */
-let expenses = JSON.parse(localStorage.getItem('tokyo2026_expenses')) || [];
-
-function renderExpenses() {
-  const listEl = document.getElementById('expenseList');
-  const sumAEl = document.getElementById('sumA');
-  const sumBEl = document.getElementById('sumB');
-  
-  let sumA = 0, sumB = 0;
-  let html = '';
-
-  expenses.forEach((ex, idx) => {
-    if(ex.person === 'A') sumA += ex.amount;
-    else sumB += ex.amount;
-
-    const personLabel = ex.person === 'A' ? '我 (A)' : '旅伴 (B)';
-    const personClass = ex.person === 'A' ? 'a' : 'b';
-    
-    html += `
-      <div class="expense-item">
-        <div class="expense-info">
-          <span class="expense-memo">${ex.memo}</span>
-          <span class="expense-person ${personClass}">${personLabel}</span>
+      // 建立列表卡片
+      const card = document.createElement('div');
+      card.className = 'item-card';
+      card.innerHTML = `
+        <div class="item-info">
+          <div class="memo">${escapeHtml(item.memo || '無備註')}</div>
+          <div class="sub-info">${item.person === 'A' ? '我 (A)' : '旅伴 (B)'}</div>
         </div>
-        <div style="display:flex; align-items:center;">
-          <span class="expense-amt">¥${ex.amount.toLocaleString()}</span>
-          <button class="expense-del" onclick="deleteExpense(${idx})">×</button>
-        </div>
-      </div>
-    `;
-  });
+        <div class="item-amount">¥${amt.toLocaleString()}</div>
+      `;
+      expenseList.appendChild(card);
+    });
 
-  if(expenses.length === 0) {
-    html = '<div style="text-align:center; color:var(--ghost); font-size:13px; padding:20px 0;">目前還沒有記帳紀錄</div>';
+    // 更新金額總計
+    totalAEl.textContent = `¥${totalA.toLocaleString()}`;
+    totalBEl.textContent = `¥${totalB.toLocaleString()}`;
   }
 
-  listEl.innerHTML = html;
-  sumAEl.textContent = '¥' + sumA.toLocaleString();
-  sumBEl.textContent = '¥' + sumB.toLocaleString();
-}
+  // 3. 送出表單資料至 Google 試算表
+  expenseForm.addEventListener('submit', function(e) {
+    e.preventDefault();
 
-// 非同步的記帳函式，串接 Google Apps Script
-async function addExpense() {
-  const amtInput = document.getElementById('expAmount');
-  const memoInput = document.getElementById('expMemo');
-  const personA = document.getElementById('personA').checked;
-  const btn = document.getElementById('btnAddExpense');
+    submitBtn.disabled = true;
+    submitBtn.textContent = '上傳中...';
 
-  const amount = parseInt(amtInput.value, 10);
-  const memo = memoInput.value.trim();
+    const payload = {
+      person: document.getElementById('person').value,
+      amount: document.getElementById('amount').value,
+      memo: document.getElementById('memo').value,
+      date: new Date().toLocaleString('zh-TW', { timeZone: 'Asia/Taipei' })
+    };
 
-  if(isNaN(amount) || amount <= 0 || !memo) {
-    alert('請輸入有效的金額與備註！');
-    return;
-  }
-
-  const person = personA ? 'A' : 'B';
-  const timestamp = new Date().getTime();
-  const dateStr = new Date().toLocaleString('zh-TW');
-
-  // 1. 改變按鈕狀態，避免等待上傳時重複點擊
-  btn.textContent = '上傳中...';
-  btn.disabled = true;
-  btn.style.opacity = '0.7';
-
-  try {
-    // 2. 你的 Google Apps Script 網址
-    const scriptUrl = 'https://script.google.com/macros/s/AKfycbyyD4-7_lMVZTETm9CT_XVfDXARLkHPf2N1Slbs18bsJKinQDEVq7IcMECnfynhkJ1Xkw/exec';
-
-    // 將資料打包成表單格式
-    const params = new URLSearchParams();
-    params.append('person', person);
-    params.append('amount', amount);
-    params.append('memo', memo);
-    params.append('date', dateStr);
-
-    // 傳送 POST 請求至 Google Sheet
-    await fetch(scriptUrl, {
+    fetch(scriptUrl, {
       method: 'POST',
-      mode: 'no-cors', // 避免本地端測試時遇到 CORS 跨域錯誤
-      body: params
-    });
-
-    // 3. 上傳完成後，將資料寫入本地 localStorage 讓畫面即時更新
-    expenses.unshift({
-      person: person,
-      amount: amount,
-      memo: memo,
-      timestamp: timestamp
-    });
-
-    localStorage.setItem('tokyo2026_expenses', JSON.stringify(expenses));
-    
-    // 清空輸入框
-    amtInput.value = '';
-    memoInput.value = '';
-    
-    // 重新渲染畫面
-    renderExpenses();
-
-  } catch (error) {
-    console.error('上傳失敗:', error);
-    alert('資料上傳失敗，請檢查網路連線狀態！');
-  } finally {
-    // 4. 恢復按鈕狀態
-    btn.textContent = '新增花費';
-    btn.disabled = false;
-    btn.style.opacity = '1';
-  }
-}
-
-function deleteExpense(idx) {
-  if(confirm('確定要刪除這筆花費紀錄嗎？')) {
-    expenses.splice(idx, 1);
-    localStorage.setItem('tokyo2026_expenses', JSON.stringify(expenses));
-    renderExpenses();
-  }
-}
-
-// 綁定記帳按鈕事件
-document.getElementById('btnAddExpense').addEventListener('click', addExpense);
-
-// 頁面載入時先渲染一次記帳清單
-renderExpenses();
-  
-// 頁面載入完成後自動抓取雲端最新資料
-window.addEventListener('DOMContentLoaded', loadCloudData);
-
-function loadCloudData() {
-  fetch(scriptUrl)
-    .then(response => response.json())
-    .then(data => {
-      // 這裡填入你網頁用來渲染明細與計算總金額的邏輯
-      console.log("已從 Google 試算表同步資料：", data);
-      renderExpenses(data); // 呼叫你的渲染畫面函式
+      body: JSON.stringify(payload)
     })
-    .catch(err => console.error("同步失敗：", err));
-}
-
-/* ================= BOTTOM NAV ================= */
-const navButtons = document.querySelectorAll('nav.bottom button');
-navButtons.forEach(btn=>{
-  btn.addEventListener('click', ()=>{
-    navButtons.forEach(b=>b.classList.remove('active'));
-    btn.classList.add('active');
-    document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
-    document.getElementById(btn.dataset.panel).classList.add('active');
-    window.scrollTo({top:0, behavior:'instant'});
+    .then(res => res.text())
+    .then(result => {
+      // 清空輸入框
+      document.getElementById('amount').value = '';
+      document.getElementById('memo').value = '';
+      
+      // 重新加載最新雲端資料
+      loadCloudData();
+    })
+    .catch(err => {
+      alert('新增失敗：' + err);
+    })
+    .finally(() => {
+      submitBtn.disabled = false;
+      submitBtn.textContent = '新增花費';
+    });
   });
-});
+
+  // 工具：防止 XSS 攻擊
+  function escapeHtml(text) {
+    return String(text)
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&#039;");
+  }
 </script>
+
 </body>
 </html>
