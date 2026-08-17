@@ -584,7 +584,7 @@
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v10M9 9.5c0-1.4 1.3-2.5 3-2.5s3 1 3 2.2c0 2.8-6 1.5-6 4.3 0 1.2 1.3 2.2 3 2.2s3-1.1 3-2.5"/></svg>
     預算
   </button>
-  <!-- 新增的記帳按鈕 -->
+  <!-- 記帳按鈕 -->
   <button data-panel="panel-expense">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 2v20l2-2 2 2 2-2 2 2 2-2 2 2 2-2 2 2V2z"/><path d="M8 6h8M8 10h8M8 14h8M8 18h4"/></svg>
     記帳
@@ -797,6 +797,7 @@ function renderExpenses() {
   sumBEl.textContent = '¥' + sumB.toLocaleString();
 }
 
+// 非同步的記帳函式，串接 Google Apps Script
 async function addExpense() {
   const amtInput = document.getElementById('expAmount');
   const memoInput = document.getElementById('expMemo');
@@ -821,10 +822,10 @@ async function addExpense() {
   btn.style.opacity = '0.7';
 
   try {
-    // 2. 你提供的 Google Apps Script 網址
-    const scriptUrl = 'https://script.google.com/macros/s/AKfycbyyD4-7_lMVZTETm9CT_XVfDXARLkHPf2N1Slbs18bsJKinQDEVq7IcMECnfynhkJ1Xkw/exec';
+    // 2. 你的 Google Apps Script 網址
+    const scriptUrl = 'https://script.google.com/macros/s/AKfycbyRHznEy8JbPAV-JS0F7dijg8ZjveVYVgR9WVlVCUAfSMwMhPBtOR-NaBK1yqhRdSMQqQ/exec';
 
-    // 將資料打包成表單格式，GAS 的 doPost(e) 可以透過 e.parameter 讀取
+    // 將資料打包成表單格式
     const params = new URLSearchParams();
     params.append('person', person);
     params.append('amount', amount);
@@ -838,7 +839,7 @@ async function addExpense() {
       body: params
     });
 
-    // 3. 上傳完成後，一樣將資料寫入本地 localStorage 讓畫面即時更新
+    // 3. 上傳完成後，將資料寫入本地 localStorage 讓畫面即時更新
     expenses.unshift({
       person: person,
       amount: amount,
@@ -865,6 +866,20 @@ async function addExpense() {
     btn.style.opacity = '1';
   }
 }
+
+function deleteExpense(idx) {
+  if(confirm('確定要刪除這筆花費紀錄嗎？')) {
+    expenses.splice(idx, 1);
+    localStorage.setItem('tokyo2026_expenses', JSON.stringify(expenses));
+    renderExpenses();
+  }
+}
+
+// 綁定記帳按鈕事件
+document.getElementById('btnAddExpense').addEventListener('click', addExpense);
+
+// 頁面載入時先渲染一次記帳清單
+renderExpenses();
 
 /* ================= BOTTOM NAV ================= */
 const navButtons = document.querySelectorAll('nav.bottom button');
