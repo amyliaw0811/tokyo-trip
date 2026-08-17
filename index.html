@@ -797,10 +797,11 @@ function renderExpenses() {
   sumBEl.textContent = '¥' + sumB.toLocaleString();
 }
 
-function addExpense() {
+async function addExpense() {
   const amtInput = document.getElementById('expAmount');
   const memoInput = document.getElementById('expMemo');
   const personA = document.getElementById('personA').checked;
+  const btn = document.getElementById('btnAddExpense');
 
   const amount = parseInt(amtInput.value, 10);
   const memo = memoInput.value.trim();
@@ -810,35 +811,60 @@ function addExpense() {
     return;
   }
 
-  expenses.unshift({ // 新增在最上面
-    person: personA ? 'A' : 'B',
-    amount: amount,
-    memo: memo,
-    timestamp: new Date().getTime()
-  });
+  const person = personA ? 'A' : 'B';
+  const timestamp = new Date().getTime();
+  const dateStr = new Date().toLocaleString('zh-TW');
 
-  localStorage.setItem('tokyo2026_expenses', JSON.stringify(expenses));
-  
-  // 清空輸入框
-  amtInput.value = '';
-  memoInput.value = '';
-  
-  renderExpenses();
-}
+  // 1. 改變按鈕狀態，避免等待上傳時重複點擊
+  btn.textContent = '上傳中...';
+  btn.disabled = true;
+  btn.style.opacity = '0.7';
 
-function deleteExpense(idx) {
-  if(confirm('確定要刪除這筆花費紀錄嗎？')) {
-    expenses.splice(idx, 1);
+  try {
+    // 2. 你提供的 Google Apps Script 網址
+    const scriptUrl = 'https://script.google.com/macros/s/AKfycbyRHznEy8JbPAV-JS0F7dijg8ZjveVYVgR9WVlVCUAfSMwMhPBtOR-NaBK1yqhRdSMQqQ/exec';
+
+    // 將資料打包成表單格式，GAS 的 doPost(e) 可以透過 e.parameter 讀取
+    const params = new URLSearchParams();
+    params.append('person', person);
+    params.append('amount', amount);
+    params.append('memo', memo);
+    params.append('date', dateStr);
+
+    // 傳送 POST 請求至 Google Sheet
+    await fetch(scriptUrl, {
+      method: 'POST',
+      mode: 'no-cors', // 避免本地端測試時遇到 CORS 跨域錯誤
+      body: params
+    });
+
+    // 3. 上傳完成後，一樣將資料寫入本地 localStorage 讓畫面即時更新
+    expenses.unshift({
+      person: person,
+      amount: amount,
+      memo: memo,
+      timestamp: timestamp
+    });
+
     localStorage.setItem('tokyo2026_expenses', JSON.stringify(expenses));
+    
+    // 清空輸入框
+    amtInput.value = '';
+    memoInput.value = '';
+    
+    // 重新渲染畫面
     renderExpenses();
+
+  } catch (error) {
+    console.error('上傳失敗:', error);
+    alert('資料上傳失敗，請檢查網路連線狀態！');
+  } finally {
+    // 4. 恢復按鈕狀態
+    btn.textContent = '新增花費';
+    btn.disabled = false;
+    btn.style.opacity = '1';
   }
 }
-
-// 綁定記帳按鈕事件
-document.getElementById('btnAddExpense').addEventListener('click', addExpense);
-
-// 頁面載入時先渲染一次記帳清單
-renderExpenses();
 
 /* ================= BOTTOM NAV ================= */
 const navButtons = document.querySelectorAll('nav.bottom button');
