@@ -880,6 +880,20 @@ document.getElementById('btnAddExpense').addEventListener('click', addExpense);
 
 // 頁面載入時先渲染一次記帳清單
 renderExpenses();
+  
+// 頁面載入完成後自動抓取雲端最新資料
+window.addEventListener('DOMContentLoaded', loadCloudData);
+
+function loadCloudData() {
+  fetch(scriptUrl)
+    .then(response => response.json())
+    .then(data => {
+      // 這裡填入你網頁用來渲染明細與計算總金額的邏輯
+      console.log("已從 Google 試算表同步資料：", data);
+      renderExpenses(data); // 呼叫你的渲染畫面函式
+    })
+    .catch(err => console.error("同步失敗：", err));
+}
 
 /* ================= BOTTOM NAV ================= */
 const navButtons = document.querySelectorAll('nav.bottom button');
