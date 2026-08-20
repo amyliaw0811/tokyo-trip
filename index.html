@@ -454,7 +454,7 @@
     <div class="section-label">每日交通估算</div>
     <div class="card">
       <div class="kv"><div class="k">Day 1</div><div class="v">約1,700円（大塚↔中野↔銀座↔澀谷↔池袋）</div></div>
-      <div class="kv"><div class="k">Day 2</div><div class="v">約400円（大塚↔原宿↔新宿）</div></div>
+      <div class="kv"><div class="k">Day 2</div><div class="v">約1,200–1,500円（大塚↔外苑↔東雲↔原宿↔新宿）</div></div>
       <div class="kv"><div class="k">Day 3</div><div class="v">約700–800円（大塚↔駒込、大塚↔西武球場前）</div></div>
       <div class="kv"><div class="k">Day 4</div><div class="v">約470円（大塚↔駒込↔上野↔秋葉原）</div></div>
       <div class="kv"><div class="k">Day 5</div><div class="v">約2,700円（大塚↔成田機場，含Skyliner）</div></div>
@@ -497,14 +497,14 @@
   <!-- ============ PANEL 5: 預算 ============ -->
   <section class="panel" id="panel-budget">
     <div class="budget-total">
-      <div class="num display">¥21,000–26,000</div>
+      <div class="num display">¥22,000–27,000</div>
       <div class="lbl">每人預估總花費（不含機票／房費／演唱會票／購物）</div>
     </div>
 
     <div class="section-label">分類估算</div>
     <div class="card">
       <div class="bar-row">
-        <div class="lbl-row"><span>市內交通（5日）</span><span class="amt">約 ¥5,900</span></div>
+        <div class="lbl-row"><span>市內交通（5日）</span><span class="amt">約 ¥6,700</span></div>
         <div class="bar-track"><div class="bar-fill" style="width:23%"></div></div>
       </div>
       <div class="bar-row">
@@ -520,7 +520,7 @@
     <div class="section-label">每日花費（不含購物）</div>
     <div class="card">
       <div class="kv"><div class="k">Day 1</div><div class="v">約 ¥8,000–10,000</div></div>
-      <div class="kv"><div class="k">Day 2</div><div class="v">約 ¥5,000–7,000</div></div>
+      <div class="kv"><div class="k">Day 2</div><div class="v">約 ¥6,000–8,500</div></div>
       <div class="kv"><div class="k">Day 3</div><div class="v">約 ¥3,000–4,000（不含票價）</div></div>
       <div class="kv"><div class="k">Day 4</div><div class="v">約 ¥4,000–5,000</div></div>
       <div class="kv"><div class="k">Day 5</div><div class="v">約 ¥2,700（交通）</div></div>
@@ -632,12 +632,14 @@ const days = [
     ]
   },
   {
-    id:2, date:"9/19 (六)", label:"明治神宮外苑跑車朝聖 → 原宿/表參道潮牌 → 新宿採購（含OS Drug）→ 歌舞伎町燒肉",
-    cost:"交通約¥400・購物依個人預算・餐費約¥4,500–6,500・預估總花費(不含購物) ¥5,000–7,000",
+    id:2, date:"9/19 (六)", label:"明治神宮外苑跑車朝聖 → 東雲A-PIT → 原宿/表參道潮牌 → 新宿採購（含OS Drug）→ 歌舞伎町燒肉",
+    cost:"交通約¥1,200–1,500（含往返東雲）・購物依個人預算・餐費約¥4,500–6,500・預估總花費(不含購物) ¥6,000–8,500",
     stops:[
-      {t:"08:00–09:30", type:"race", tag:"F1聖地", title:"🏎️ 明治神宮外苑（銀杏並木大道）", note:"觀賞清晨出沒的超跑、JDM與經典古董車", map:"https://www.google.com/maps/search/?api=1&query=Meiji+Jingu+Gaien+Ginkgo+Avenue"},
-      {t:"09:30–10:30", type:"food", tag:"早餐", title:"☕ 表參道晨間咖啡早餐", note:""},
-      {t:"10:30–16:30", type:"shop", tag:"爆買", title:"🛍️ 原宿/表參道潮流爆買時段", note:"LIBERTY WALK潮流門市、Le Labo原宿店（可印客製化標籤香水）、BAPE/AAPE採購", map:[
+      {t:"08:00–09:15", type:"race", tag:"F1聖地", title:"🏎️ 明治神宮外苑（銀杏並木大道）", note:"觀賞清晨出沒的超跑與經典古董車", map:"https://www.google.com/maps/search/?api=1&query=Meiji+Jingu+Gaien+Ginkgo+Avenue"},
+      {t:"09:15–10:00", type:"move", tag:"移動", title:"🚇 前往東雲", note:"從青山一丁目站/外苑前站搭地鐵至有樂町，轉乘有樂町線至「辰巳站」或臨海線至「東雲站」"},
+      {t:"10:00–12:00", type:"race", tag:"F1聖地", title:"🏎️ A-PIT Super Autobacs（東雲旗艦店）", note:"朝聖汽車文化旗艦店、大逛JDM車用配件、賽車週邊、精品與書籍", map:"https://www.google.com/maps/search/?api=1&query=A-PIT+Super+Autobacs+Shinonome"},
+      {t:"12:00–12:30", type:"move", tag:"移動", title:"🚇 前往原宿／表參道", note:"從東雲站搭乘臨海線（直通埼京線/山手線）至「原宿站」或「明治神宮前站」"},
+      {t:"12:30–16:30", type:"shop", tag:"爆買", title:"🛍️ 原宿/表參道潮流爆買時段", note:"LIBERTY WALK潮流門市、Le Labo原宿店（可印客製化標籤香水）、BAPE/AAPE採購", map:[
         {url:"https://maps.app.goo.gl/u8nmffz6TMJGWffo8?g_st=com.apple.sharing.quick-note", label:"LIBERTY WALK區"},
         {url:"https://www.google.com/maps/search/?api=1&query=LE+LABO+Harajuku", label:"Le Labo"}
       ]},
