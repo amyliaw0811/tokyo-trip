@@ -453,9 +453,9 @@
 
     <div class="section-label">每日交通估算</div>
     <div class="card">
-      <div class="kv"><div class="k">Day 1</div><div class="v">約1,700円（大塚↔中野↔銀座↔澀谷↔池袋）</div></div>
-      <div class="kv"><div class="k">Day 2</div><div class="v">約1,200–1,500円（大塚↔外苑↔東雲↔原宿↔新宿）</div></div>
-      <div class="kv"><div class="k">Day 3</div><div class="v">約900–1,100円（大塚↔外苑↔駒込、大塚↔西武球場前）</div></div>
+      <div class="kv"><div class="k">Day 1</div><div class="v">約1,200円（大塚↔有樂町↔國會議事堂前↔澀谷↔池袋）</div></div>
+      <div class="kv"><div class="k">Day 2</div><div class="v">約1,600–1,900円（大塚↔東雲↔中野↔原宿↔新宿）</div></div>
+      <div class="kv"><div class="k">Day 3</div><div class="v">約1,100–1,300円（大塚↔外苑↔駒込、大塚↔練馬↔西武球場前）</div></div>
       <div class="kv"><div class="k">Day 4</div><div class="v">約470円（大塚↔駒込↔上野↔秋葉原）</div></div>
       <div class="kv"><div class="k">Day 5</div><div class="v">約2,700円（大塚↔成田機場，含Skyliner）</div></div>
     </div>
@@ -497,14 +497,14 @@
   <!-- ============ PANEL 5: 預算 ============ -->
   <section class="panel" id="panel-budget">
     <div class="budget-total">
-      <div class="num display">¥22,000–27,000</div>
+      <div class="num display">¥21,500–27,000</div>
       <div class="lbl">每人預估總花費（不含機票／房費／演唱會票／購物）</div>
     </div>
 
     <div class="section-label">分類估算</div>
     <div class="card">
       <div class="bar-row">
-        <div class="lbl-row"><span>市內交通（5日）</span><span class="amt">約 ¥6,900</span></div>
+        <div class="lbl-row"><span>市內交通（5日）</span><span class="amt">約 ¥7,600</span></div>
         <div class="bar-track"><div class="bar-fill" style="width:23%"></div></div>
       </div>
       <div class="bar-row">
@@ -519,9 +519,9 @@
 
     <div class="section-label">每日花費（不含購物）</div>
     <div class="card">
-      <div class="kv"><div class="k">Day 1</div><div class="v">約 ¥8,000–10,000</div></div>
-      <div class="kv"><div class="k">Day 2</div><div class="v">約 ¥6,000–8,500</div></div>
-      <div class="kv"><div class="k">Day 3</div><div class="v">約 ¥3,000–4,200（不含票價）</div></div>
+      <div class="kv"><div class="k">Day 1</div><div class="v">約 ¥7,000–9,000</div></div>
+      <div class="kv"><div class="k">Day 2</div><div class="v">約 ¥6,500–9,000</div></div>
+      <div class="kv"><div class="k">Day 3</div><div class="v">約 ¥3,200–4,400（不含票價）</div></div>
       <div class="kv"><div class="k">Day 4</div><div class="v">約 ¥4,000–5,000</div></div>
       <div class="kv"><div class="k">Day 5</div><div class="v">約 ¥2,700（交通）</div></div>
     </div>
@@ -615,48 +615,53 @@ navButtons.forEach(btn => {
 /* ================= DATA ================= */
 const days = [
   {
-    id:1, date:"9/18 (五)", label:"落地東京 → 中野F1聖地 → 銀座F1周邊 → 澀谷SKY夜景",
-    cost:"交通約¥1,700・門票約¥3,400起・餐費約¥2,500–3,500・預估總花費 ¥8,000–10,000",
+    id:1, date:"9/18 (五)", label:"落地東京 → 銀座/國會議事堂前F1周邊 → 澀谷SKY夜景 → 池袋",
+    cost:"交通約¥1,200・門票約¥3,400起・餐費約¥2,500–3,500・預估總花費 ¥7,000–9,000",
     stops:[
       {t:"11:00", type:"move", tag:"移動", title:"🛬 抵達成田機場：辦理入境、領行李", note:"" },
       {t:"12:00–13:30", type:"move", tag:"移動", title:"🚄 前往大塚飯店", note:"搭乘京成Skyliner至日暮里站，轉JR山手線至大塚站"},
       {t:"13:30–14:15", type:"move", tag:"住宿", title:"🏨 飯店Check-in＆放行李", note:"COCOYO HOTEL 大塚", map:"https://maps.app.goo.gl/hFYTETCQcjDtg6DR9?g_st=com.apple.sharing.quick-note"},
-      {t:"14:15–14:45", type:"move", tag:"移動", title:"🚇 輕裝前往中野", note:"大塚→新宿(JR山手線3站)，轉中央線快速(1站)直達中野"},
-      {t:"14:45–16:30", type:"race", tag:"F1聖地", title:"🏎️ F1 Signass 中野店", note:"淘絕版F1車隊外套、老海報、帽子與簽名卡片", map:"https://www.google.com/maps/search/?api=1&query=F1+Signass+Nakano"},
+      {t:"14:15–15:00", type:"move", tag:"移動", title:"🚇 前往有樂町", note:"大塚站搭JR山手線直達有樂町站"},
+      {t:"15:00–16:00", type:"race", tag:"F1聖地", title:"🏎️ EURO SPORTS TOKYO（銀座店）", note:"Marronnier Gate 1 B1F，朝聖Ferrari、Red Bull等各大車隊最新隊服與賽車帽", map:"https://www.google.com/maps/search/?api=1&query=EURO+SPORTS+TOKYO"},
+      {t:"16:00–16:15", type:"move", tag:"移動", title:"🚇 前往國會議事堂前", note:"地鐵丸之內線／千代田線直達，車程約10分鐘"},
       {t:"16:15–17:15", type:"race", tag:"F1聖地", title:"🏎️ BINGO SPORTS（東京展間）", note:"朝聖日本頂級賽車/超跑拍賣展間：Pagani、Bugatti、經典Ferrari賽車等", map:"https://www.google.com/maps/search/?api=1&query=BINGO+SPORTS+Tokyo"},
-      {t:"17:15–18:30", type:"race", tag:"F1聖地", title:"🏎️ EURO SPORTS TOKYO（銀座店）", note:"Marronnier Gate 1 B1F，朝聖Ferrari、Red Bull等各大車隊最新隊服與賽車帽", map:"https://www.google.com/maps/search/?api=1&query=EURO+SPORTS+TOKYO"},
-      {t:"18:30–18:45", type:"move", tag:"移動", title:"🚇 有樂町→澀谷", note:"JR山手線直達"},
+      {t:"17:15–17:45", type:"move", tag:"移動", title:"🚇 前往澀谷", note:"地鐵直達澀谷站"},
       {t:"19:00–20:30", type:"view", tag:"夜景", title:"🌆 SHIBUYA SKY高空百萬夜景", note:"⚠️記得提前3-4週（約8/21左右）搶晚間門票"},
       {t:"20:30–22:00", type:"food", tag:"晚餐", title:"🍻 串焼き ミートマン 澀谷店", note:"", map:"https://www.google.com/maps/search/?api=1&query=Kushiyaki+Meat+Man+Shibuya"},
-      {t:"21:30後", type:"race", tag:"F1聖地", title:"🏎️ 池袋Sunshine City地下賞車＋2F買雨衣", note:"直奔B2/B3停車場朝聖深夜出沒的神級改裝跑車與JDM", map:"https://www.google.com/maps/search/?api=1&query=Sunshine+Parking+Lot"}
+      {t:"22:00後", type:"race", tag:"F1聖地", title:"🏎️ 池袋Sunshine City地下賞車＋2F買雨衣", note:"澀谷→池袋(JR山手線直達)。直奔B2/B3停車場朝聖深夜出沒的神級改裝跑車與JDM", map:"https://www.google.com/maps/search/?api=1&query=Sunshine+Parking+Lot"}
     ]
   },
   {
-    id:2, date:"9/19 (六)", label:"東雲A-PIT賞車 → 原宿/表參道潮牌 → 新宿採購（含OS Drug）→ 歌舞伎町燒肉",
-    cost:"交通約¥1,200–1,500（含往返東雲）・購物依個人預算・餐費約¥4,500–6,500・預估總花費(不含購物) ¥6,000–8,500",
+    id:2, date:"9/19 (六)", label:"東雲A-PIT賞車 → 中野F1聖地 → 原宿/表參道 → 新宿採購（含OS Drug）",
+    cost:"交通約¥1,600–1,900・購物依個人預算・餐費約¥4,500–6,500・預估總花費(不含購物) ¥6,500–9,000",
     stops:[
-      {t:"09:00–10:00", type:"move", tag:"移動", title:"🚇 前往東雲", note:"大塚站搭JR山手線轉乘至有樂町，轉乘有樂町線至「辰巳站」或臨海線至「東雲站」"},
-      {t:"10:00–12:00", type:"race", tag:"F1聖地", title:"🏎️ A-PIT Super Autobacs（東雲旗艦店）", note:"朝聖汽車文化旗艦店、大逛JDM車用配件、賽車週邊、精品與書籍", map:"https://www.google.com/maps/search/?api=1&query=A-PIT+Super+Autobacs+Shinonome"},
-      {t:"12:00–12:30", type:"move", tag:"移動", title:"🚇 前往原宿／表參道", note:"從東雲站搭乘臨海線（直通埼京線/山手線）至「原宿站」或「明治神宮前站」"},
-      {t:"12:30–16:30", type:"shop", tag:"爆買", title:"🛍️ 原宿/表參道潮流爆買時段", note:"LIBERTY WALK潮流門市、Le Labo原宿店（可印客製化標籤香水）、BAPE/AAPE採購", map:[
+      {t:"08:30–09:15", type:"move", tag:"移動", title:"🚇 前往東雲", note:"大塚站搭JR山手線轉乘至有樂町，轉乘有樂町線至「辰巳站」或臨海線至「東雲站」"},
+      {t:"09:15–11:00", type:"race", tag:"F1聖地", title:"🏎️ A-PIT Super Autobacs（東雲旗艦店）", note:"朝聖汽車文化旗艦店、大逛JDM車用配件、賽車週邊、精品與書籍", map:"https://www.google.com/maps/search/?api=1&query=A-PIT+Super+Autobacs+Shinonome"},
+      {t:"11:00–11:50", type:"move", tag:"移動", title:"🚇 前往中野", note:"東雲搭臨海線轉JR，跨區長途移動約50分鐘"},
+      {t:"11:50–13:20", type:"race", tag:"F1聖地", title:"🏎️ F1 Signass 中野店", note:"淘絕版F1車隊外套、老海報、帽子與簽名卡片", map:"https://www.google.com/maps/search/?api=1&query=F1+Signass+Nakano"},
+      {t:"13:20–13:50", type:"move", tag:"移動", title:"🚇 前往原宿", note:"中野搭JR中央線轉山手線至原宿站"},
+      {t:"13:50–17:00", type:"shop", tag:"爆買", title:"🛍️ 原宿/表參道潮流爆買時段", note:"LIBERTY WALK潮流門市、Le Labo原宿店（可印客製化標籤香水）、BAPE/AAPE採購", map:[
         {url:"https://maps.app.goo.gl/u8nmffz6TMJGWffo8?g_st=com.apple.sharing.quick-note", label:"LIBERTY WALK區"},
         {url:"https://www.google.com/maps/search/?api=1&query=LE+LABO+Harajuku", label:"Le Labo"}
       ]},
-      {t:"16:30–17:00", type:"move", tag:"移動", title:"🚇 前往新宿", note:"原宿站搭JR山手線（2站）至新宿站"},
-      {t:"17:00–18:00", type:"race", tag:"F1聖地", title:"🏎️ KEN BOX 新宿店", note:"淘絕版Tomica與經典模型車", map:"https://maps.app.goo.gl/nktahhbR3Tth64387?g_st=com.apple.sharing.quick-note"},
-      {t:"18:00–19:00", type:"shop", tag:"爆買", title:"🏬 Alpen Tokyo（新宿巨型戶外運動旗艦店）", note:"全日最大級戶外裝備／運動用品店，買機能服飾與戶外裝備（可退稅）", map:"https://www.google.com/maps/search/?api=1&query=Alpen+Tokyo+Shinjuku"},
-      {t:"19:00–19:45", type:"shop", tag:"藥妝", title:"💊 【Day2藥妝點】OS Drug 新宿店", note:"新宿三丁目商圈（新宿區新宿3-29-13），從Alpen Tokyo散步過去僅需約3分鐘。趁晚餐前爆買一波超平價藥妝，買完直接帶去吃晚餐，吃完放回飯店（現金結帳）", map:"https://www.google.com/maps/search/?api=1&query=OS+Drug+Shinjuku"},
+      {t:"17:00–17:30", type:"move", tag:"移動", title:"🚇 前往新宿", note:"原宿站搭JR山手線（2站）至新宿站"},
+      {t:"17:30–18:30", type:"race", tag:"F1聖地", title:"🏎️ KEN BOX 新宿店", note:"淘絕版Tomica與經典模型車", map:"https://maps.app.goo.gl/nktahhbR3Tth64387?g_st=com.apple.sharing.quick-note"},
+      {t:"18:30–19:15", type:"shop", tag:"爆買", title:"🏬 Alpen Tokyo（新宿巨型戶外運動旗艦店）", note:"全日最大級戶外裝備／運動用品店，買機能服飾與戶外裝備（可退稅）", map:"https://www.google.com/maps/search/?api=1&query=Alpen+Tokyo+Shinjuku"},
+      {t:"19:15–19:45", type:"shop", tag:"藥妝", title:"💊 【Day2藥妝點】OS Drug 新宿店", note:"新宿三丁目商圈（新宿區新宿3-29-13），從Alpen Tokyo散步過去僅需約3分鐘。趁晚餐前爆買一波超平價藥妝（現金結帳）", map:"https://www.google.com/maps/search/?api=1&query=OS+Drug+Shinjuku"},
       {t:"20:00後", type:"food", tag:"晚餐", title:"🔥 火之丸-Hinomaru- 日式燒肉（歌舞伎町）", note:"記得先預約。吃飽後可在歌舞伎町入口散步打卡，順便逛唐吉訶德歌舞伎町店", map:"https://maps.app.goo.gl/oZgchBTZuZiexQey7?g_st=com.apple.sharing.quick-note"}
     ]
   },
   {
-    id:3, date:"9/20 (日)", label:"明治神宮外苑跑車朝聖 → 貓咪神社 → 威肯演唱會",
-    cost:"交通約¥900–1,100・演唱會票依購票金額・餐費約¥2,000–3,000・預估總花費(不含票價) ¥3,000–4,200",
+    id:3, date:"9/20 (日)", label:"明治神宮外苑跑車朝聖 → 貓咪神社 → 練馬Up Garage → 威肯演唱會",
+    cost:"交通約¥1,100–1,300・演唱會票依購票金額・餐費約¥2,000–3,000・預估總花費(不含票價) ¥3,200–4,400",
     stops:[
-      {t:"08:00–09:30", type:"race", tag:"F1聖地", title:"🏎️ 明治神宮外苑（明治神宮外苑銀杏林）", note:"觀賞週日清晨出沒的超跑、JDM與經典古董車", map:"https://www.google.com/maps/search/?api=1&query=Meiji+Jingu+Gaien+Ginkgo+Avenue"},
-      {t:"09:30–10:30", type:"view", tag:"神社", title:"⛩️ 駒込妙義神社（貓咪神社）", note:"青山一丁目站/外苑前站搭地鐵/JR至「駒込站」，步行5分鐘。尋找貓咪石雕、入手貓咪御守與繪馬", map:"https://maps.app.goo.gl/wjDiCLVvgWk594iK7?g_st=com.apple.sharing.quick-note"},
-      {t:"10:30–14:00", type:"food", tag:"早午餐", title:"☕ 吃早午餐、回飯店卸貨充飽電", note:""},
-      {t:"14:30後", type:"live", tag:"演唱會", title:"🎤 西武巨蛋：The Weeknd 演唱會！", note:"大塚→池袋(轉西武池袋線)→西武球場前站。⚠️提早出發應對排隊人潮，回程人潮極多；Suica/Pasmo請先儲值足夠金額；巨蛋半開放式，記得帶薄外套", map:"https://maps.app.goo.gl/ygCZtLf52oxr8x2JA?g_st=com.apple.sharing.quick-note"}
+      {t:"08:00–09:00", type:"race", tag:"F1聖地", title:"🏎️ 明治神宮外苑（銀杏並木大道）", note:"觀賞週日清晨出沒的超跑、JDM與經典古董車", map:"https://www.google.com/maps/search/?api=1&query=Meiji+Jingu+Gaien+Ginkgo+Avenue"},
+      {t:"09:00–09:45", type:"move", tag:"移動", title:"🚇 前往駒込", note:"青山一丁目站/外苑前站搭地鐵/JR至「駒込站」"},
+      {t:"09:45–10:45", type:"view", tag:"神社", title:"⛩️ 妙義神社（貓咪神社）", note:"步行5分鐘。尋找貓咪石雕、入手貓咪御守與繪馬", map:"https://maps.app.goo.gl/wjDiCLVvgWk594iK7?g_st=com.apple.sharing.quick-note"},
+      {t:"10:45–11:15", type:"food", tag:"早午餐", title:"☕ 回飯店稍作休息、簡單吃點東西", note:"⚠️這天行程較滿，這段緩衝時間比較短"},
+      {t:"11:15–13:15", type:"race", tag:"F1聖地", title:"🏎️ Up Garage 練馬店", note:"大塚→池袋(轉西武池袋線)，練馬站就在往西武球場前的路線上，順路下車逛，逛完再繼續搭同一條線前往會場。⚠️若有購買車用零件等大型物品，建議先繞回飯店放好再出發，避免無法帶入演唱會場館", map:"https://www.google.com/maps/search/?api=1&query=Up+Garage+Nerima"},
+      {t:"13:15–14:15", type:"move", tag:"移動", title:"🚇 前往西武球場前", note:"繼續搭西武池袋線，轉車至西武球場前站，準備入場"},
+      {t:"14:30後", type:"live", tag:"演唱會", title:"🎤 西武巨蛋：The Weeknd 演唱會！", note:"⚠️提早出發應對排隊人潮，回程人潮極多；Suica/Pasmo請先儲值足夠金額；巨蛋半開放式，記得帶薄外套", map:"https://maps.app.goo.gl/ygCZtLf52oxr8x2JA?g_st=com.apple.sharing.quick-note"}
     ]
   },
   {
