@@ -453,7 +453,7 @@
 
     <div class="section-label">每日交通估算</div>
     <div class="card">
-      <div class="kv"><div class="k">Day 1</div><div class="v">約1,200円（大塚↔有樂町↔國會議事堂前↔澀谷↔池袋）</div></div>
+      <div class="kv"><div class="k">Day 1</div><div class="v">約1,400円（大塚↔池袋↔有樂町↔國會議事堂前↔澀谷↔池袋）</div></div>
       <div class="kv"><div class="k">Day 2</div><div class="v">約1,600–1,900円（大塚↔東雲↔中野↔原宿↔新宿）</div></div>
       <div class="kv"><div class="k">Day 3</div><div class="v">約900–1,100円（大塚↔駒込、大塚↔練馬↔西武球場前）</div></div>
       <div class="kv"><div class="k">Day 4</div><div class="v">約470円（大塚↔駒込↔上野↔秋葉原）</div></div>
@@ -504,7 +504,7 @@
     <div class="section-label">分類估算</div>
     <div class="card">
       <div class="bar-row">
-        <div class="lbl-row"><span>市內交通（5日）</span><span class="amt">約 ¥7,400</span></div>
+        <div class="lbl-row"><span>市內交通（5日）</span><span class="amt">約 ¥7,600</span></div>
         <div class="bar-track"><div class="bar-fill" style="width:23%"></div></div>
       </div>
       <div class="bar-row">
@@ -519,7 +519,7 @@
 
     <div class="section-label">每日花費（不含購物）</div>
     <div class="card">
-      <div class="kv"><div class="k">Day 1</div><div class="v">約 ¥7,000–9,000</div></div>
+      <div class="kv"><div class="k">Day 1</div><div class="v">約 ¥7,200–9,200</div></div>
       <div class="kv"><div class="k">Day 2</div><div class="v">約 ¥6,500–9,000</div></div>
       <div class="kv"><div class="k">Day 3</div><div class="v">約 ¥3,000–4,200（不含票價）</div></div>
       <div class="kv"><div class="k">Day 4</div><div class="v">約 ¥4,000–5,000</div></div>
@@ -615,20 +615,21 @@ navButtons.forEach(btn => {
 /* ================= DATA ================= */
 const days = [
   {
-    id:1, date:"9/18 (五)", label:"落地東京 → 銀座/國會議事堂前F1周邊 → 澀谷SKY夜景 → 池袋",
-    cost:"交通約¥1,200・門票約¥3,400起・餐費約¥2,500–3,500・預估總花費 ¥7,000–9,000",
+    id:1, date:"9/18 (五)", label:"落地東京 → 池袋Sunshine City → 銀座/國會議事堂前F1周邊 → 澀谷SKY夜景 → 池袋賞車",
+    cost:"交通約¥1,400・門票約¥3,400起・餐費約¥2,500–3,500・預估總花費 ¥7,200–9,200",
     stops:[
       {t:"11:00", type:"move", tag:"移動", title:"🛬 抵達成田機場：辦理入境、領行李", note:"" },
       {t:"12:00–13:30", type:"move", tag:"移動", title:"🚄 前往大塚飯店", note:"搭乘京成Skyliner至日暮里站，轉JR山手線至大塚站"},
       {t:"13:30–14:15", type:"move", tag:"住宿", title:"🏨 飯店Check-in＆放行李", note:"COCOYO HOTEL 大塚", map:"https://maps.app.goo.gl/hFYTETCQcjDtg6DR9?g_st=com.apple.sharing.quick-note"},
-      {t:"14:15–15:00", type:"move", tag:"移動", title:"🚇 前往有樂町", note:"大塚站搭JR山手線直達有樂町站"},
-      {t:"15:00–16:00", type:"race", tag:"F1聖地", title:"🏎️ EURO SPORTS TOKYO（銀座店）", note:"Marronnier Gate 1 B1F，朝聖Ferrari、Red Bull等各大車隊最新隊服與賽車帽", map:"https://www.google.com/maps/search/?api=1&query=EURO+SPORTS+TOKYO"},
-      {t:"16:00–16:15", type:"move", tag:"移動", title:"🚇 前往國會議事堂前", note:"地鐵丸之內線／千代田線直達，車程約10分鐘"},
-      {t:"16:15–17:15", type:"race", tag:"F1聖地", title:"🏎️ BINGO SPORTS（東京展間）", note:"朝聖日本頂級賽車/超跑拍賣展間：Pagani、Bugatti、經典Ferrari賽車等", map:"https://www.google.com/maps/search/?api=1&query=BINGO+SPORTS+Tokyo"},
-      {t:"17:15–17:45", type:"move", tag:"移動", title:"🚇 前往澀谷", note:"地鐵直達澀谷站"},
+      {t:"14:15–15:00", type:"shop", tag:"逛街", title:"🛍️ 池袋Sunshine City 逛街", note:"大塚站搭JR山手線1站至池袋站。白天商場營業中，買雨衣、順便留意地下停車場有沒有車", map:"https://www.google.com/maps/search/?api=1&query=Sunshine+City+Ikebukuro"},
+      {t:"15:00–15:20", type:"move", tag:"移動", title:"🚇 前往有樂町", note:"池袋站搭JR山手線直達有樂町站"},
+      {t:"15:20–16:20", type:"race", tag:"F1聖地", title:"🏎️ EURO SPORTS TOKYO（銀座店）", note:"Marronnier Gate 1 B1F，朝聖Ferrari、Red Bull等各大車隊最新隊服與賽車帽", map:"https://www.google.com/maps/search/?api=1&query=EURO+SPORTS+TOKYO"},
+      {t:"16:20–16:35", type:"move", tag:"移動", title:"🚇 前往國會議事堂前", note:"地鐵丸之內線／千代田線直達，車程約10分鐘"},
+      {t:"16:35–17:35", type:"race", tag:"F1聖地", title:"🏎️ BINGO SPORTS（東京展間）", note:"朝聖日本頂級賽車/超跑拍賣展間：Pagani、Bugatti、經典Ferrari賽車等", map:"https://www.google.com/maps/search/?api=1&query=BINGO+SPORTS+Tokyo"},
+      {t:"17:35–18:05", type:"move", tag:"移動", title:"🚇 前往澀谷", note:"地鐵直達澀谷站"},
       {t:"19:00–20:30", type:"view", tag:"夜景", title:"🌆 SHIBUYA SKY高空百萬夜景", note:"⚠️記得提前3-4週（約8/21左右）搶晚間門票"},
       {t:"20:30–22:00", type:"food", tag:"晚餐", title:"🍻 串焼き ミートマン 澀谷店", note:"", map:"https://www.google.com/maps/search/?api=1&query=Kushiyaki+Meat+Man+Shibuya"},
-      {t:"22:00後", type:"race", tag:"F1聖地", title:"🏎️ 池袋Sunshine City地下賞車＋2F買雨衣", note:"澀谷→池袋(JR山手線直達)。直奔B2/B3停車場朝聖深夜出沒的神級改裝跑車與JDM", map:"https://www.google.com/maps/search/?api=1&query=Sunshine+Parking+Lot"}
+      {t:"22:00後", type:"race", tag:"F1聖地", title:"🏎️ 池袋Sunshine City地下停車場賞車", note:"澀谷→池袋(JR山手線直達)。B2/B3停車場24小時開放，直奔朝聖深夜出沒的神級改裝跑車與JDM；⚠️23:30後正門會關閉，需改走Sunshine 60大樓1F防災中心旁的夜間通用口進出。逛完直接回大塚，不用再折返", map:"https://www.google.com/maps/search/?api=1&query=Sunshine+Parking+Lot"}
     ]
   },
   {
