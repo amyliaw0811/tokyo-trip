@@ -370,6 +370,7 @@
   .expense-input:focus { border-color: var(--amber); }
   .expense-input::placeholder { color: var(--ghost); }
   
+  .fx-note { font-size: 11.5px; color: var(--ghost); margin: 2px 0 8px; text-align: center; }
   .expense-btn { width: 100%; background: var(--red); color: white; padding: 14px; border-radius: 8px; border: none; font-weight: 700; font-size: 15px; margin-top: 4px; cursor: pointer; transition: opacity 0.2s;}
   .expense-btn:active { opacity: 0.8; }
   
@@ -539,12 +540,19 @@
         <input type="radio" name="person" id="personB" value="B">
         <label for="personB">旅伴 (B)</label>
       </div>
+      <div class="person-toggle">
+        <input type="radio" name="currency" id="currJPY" value="JPY" checked>
+        <label for="currJPY">円 JPY</label>
+        <input type="radio" name="currency" id="currTWD" value="TWD">
+        <label for="currTWD">台幣 TWD</label>
+      </div>
       <div class="input-group">
         <input type="number" id="expAmount" class="expense-input" placeholder="輸入金額 (例: 1500)" inputmode="numeric">
       </div>
       <div class="input-group">
         <input type="text" id="expMemo" class="expense-input" placeholder="備註 (例: 買藥妝、吃拉麵...)">
       </div>
+      <div class="fx-note" id="fxNote">匯率載入中...</div>
       <button class="expense-btn" id="btnAddExpense" onclick="addExpense()">新增花費</button>
     </div>
 
@@ -552,11 +560,11 @@
     <div class="expense-summary">
       <div class="summary-box">
         <div class="lbl">我 (A) 總計</div>
-        <div class="val" id="sumA">¥0</div>
+        <div class="val" id="sumA">NT$0</div>
       </div>
       <div class="summary-box">
         <div class="lbl">旅伴 (B) 總計</div>
-        <div class="val" id="sumB">¥0</div>
+        <div class="val" id="sumB">NT$0</div>
       </div>
     </div>
 
@@ -821,9 +829,53 @@ renderPacking();
 
 /* ================= EXPENSE TRACKER (GOOGLE APPS SCRIPT) ================= */
 const scriptUrl = 'https://script.google.com/macros/s/AKfycbyyD4-7_lMVZTETm9CT_XVfDXARLkHPf2N1Slbs18bsJKinQDEVq7IcMECnfynhkJ1Xkw/exec';
+let JPY_TO_TWD_RATE = 0.21; // 預設備用匯率，即時匯率抓取成功後會被覆蓋
+let fxRateIsLive = false;
+
+// 頁面載入時抓取即時匯率（免費、無需API Key的匯率來源，每日更新）
+fetchLiveExchangeRate();
+function fetchLiveExchangeRate() {
+  fetch('https://cdn.jsdelivr.net/npm/@fawazahmed0/currency-api@latest/v1/currencies/jpy.json')
+    .then(res => res.json())
+    .then(data => {
+      const rate = data && data.jpy && data.jpy.twd;
+      if (rate && rate > 0) {
+        JPY_TO_TWD_RATE = rate;
+        fxRateIsLive = true;
+        updateCurrencyUI();
+      }
+    })
+    .catch(() => {
+      // 抓取失敗就沿用預設備用匯率，不影響記帳功能正常使用
+      fxRateIsLive = false;
+    });
+}
 
 // 網頁開啟時自動讀取雲端資料
 window.addEventListener('DOMContentLoaded', loadCloudExpenses);
+
+// 幣別切換時更新輸入框placeholder與提示文字
+document.querySelectorAll('input[name="currency"]').forEach(radio => {
+  radio.addEventListener('change', updateCurrencyUI);
+});
+function updateCurrencyUI() {
+  const isJPY = document.getElementById('currJPY').checked;
+  const amtInput = document.getElementById('expAmount');
+  const fxNote = document.getElementById('fxNote');
+  if (isJPY) {
+    amtInput.placeholder = '輸入日圓金額 (例: 1500)';
+    const rateLabel = JPY_TO_TWD_RATE.toFixed(4);
+    fxNote.textContent = fxRateIsLive
+      ? `即時匯率 1円 ≈ ${rateLabel}台幣 自動換算，紀錄統一以台幣儲存`
+      : `依備用匯率 1円 ≈ ${rateLabel}台幣 自動換算（即時匯率抓取中或暫時無法取得）`;
+    fxNote.style.display = 'block';
+  } else {
+    amtInput.placeholder = '輸入台幣金額 (例: 315)';
+    fxNote.textContent = '直接以台幣金額記錄';
+    fxNote.style.display = 'block';
+  }
+}
+updateCurrencyUI();
 
 function loadCloudExpenses() {
   const listEl = document.getElementById('expenseList');
@@ -850,8 +902,8 @@ function renderExpenses(data) {
 
   if (!data || data.length === 0) {
     listEl.innerHTML = '<div style="text-align:center; color:var(--ghost); font-size:13px; padding:20px 0;">目前還沒有記帳紀錄</div>';
-    sumAEl.textContent = '¥0';
-    sumBEl.textContent = '¥0';
+    sumAEl.textContent = 'NT$0';
+    sumBEl.textContent = 'NT$0';
     return;
   }
 
@@ -871,35 +923,39 @@ function renderExpenses(data) {
           <span class="expense-person ${personClass}">${personLabel}</span>
         </div>
         <div style="display:flex; align-items:center;">
-          <span class="expense-amt">¥${amt.toLocaleString()}</span>
+          <span class="expense-amt">NT$${amt.toLocaleString()}</span>
         </div>
       </div>
     `;
   });
 
   listEl.innerHTML = html;
-  sumAEl.textContent = '¥' + sumA.toLocaleString();
-  sumBEl.textContent = '¥' + sumB.toLocaleString();
+  sumAEl.textContent = 'NT$' + sumA.toLocaleString();
+  sumBEl.textContent = 'NT$' + sumB.toLocaleString();
 }
 
 async function addExpense() {
   const amtInput = document.getElementById('expAmount');
   const memoInput = document.getElementById('expMemo');
   const personA = document.getElementById('personA').checked;
+  const isJPY = document.getElementById('currJPY').checked;
   const btn = document.getElementById('btnAddExpense');
 
-  const amount = parseInt(amtInput.value, 10);
+  const rawAmount = parseFloat(amtInput.value);
   const memo = memoInput.value.trim();
 
-  if (isNaN(amount) || amount <= 0 || !memo) {
+  if (isNaN(rawAmount) || rawAmount <= 0 || !memo) {
     alert('請輸入有效的金額與備註！');
     return;
   }
 
+  // 若選擇日圓，前端先換算成台幣再送出；API/Google Sheet端一律收台幣，不用改動
+  const amount = isJPY ? Math.round(rawAmount * JPY_TO_TWD_RATE) : Math.round(rawAmount);
+
   const payload = {
     person: personA ? 'A' : 'B',
     amount: amount,
-    memo: memo,
+    memo: isJPY ? `${memo}（¥${rawAmount.toLocaleString()}）` : memo,
     date: new Date().toLocaleString('zh-TW', { timeZone: 'Asia/Taipei' })
   };
 
